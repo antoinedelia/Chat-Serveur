@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -23,12 +24,14 @@ public class ClientThread implements Runnable{
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintWriter(socket.getOutputStream());
 			
-			Thread thread4 = new Thread(new Reception(socket, in, login));
+			Thread thread4 = new Thread(new Reception(socket, in, login, out));
 			thread4.start();
 			Thread thread5 = new Thread(new Emission(socket, out));
 			thread5.start();
 			
-		} catch(Exception e){ e.printStackTrace(); }
+		} catch(Exception e){ 
+			e.printStackTrace(); 
+		}
 
 
 	}

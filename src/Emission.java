@@ -6,12 +6,12 @@ public class Emission implements Runnable {
 	
 	
 	
-	private PrintWriter out = null;
-	private Socket socket = null;
+	private PrintWriter out;
+//	private Socket socket = null;
 
 	public Emission (Socket s, PrintWriter out)
 	{
-		this.socket  = s;
+//		this.socket  = s;
 		this.out = out;
 	}
 

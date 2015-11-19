@@ -4,32 +4,34 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Reception implements Runnable {
-	
-	private BufferedReader in = null;
-	private String login = null;
+
+	private BufferedReader in;
+	private PrintWriter out;
+	private String message, login = null;
 	private Socket socket = null;
 
-	public Reception (Socket s, BufferedReader in, String login)
+	public Reception (Socket s, BufferedReader in, String login, PrintWriter out)
 	{
 		this.socket  = s;
 		this.in = in;
 		this.login = login;
+		this.out = out;
 	}
 
 	@Override
 	public void run() {
-		
+
 		while(true)
 		{
 			try {
-				String message = in.readLine();
-				System.out.println(login + " : " + message);
-			} catch (IOException e) {
-				try {
-					socket.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
+				message = in.readLine();
+				if(message != null && !message.isEmpty())
+				{
+					System.out.println(login + " : " + message);
+					out.println(login + " : " + message);
+					out.flush();
 				}
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
