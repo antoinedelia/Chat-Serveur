@@ -22,17 +22,12 @@ public class ClientThread implements Runnable{
 		try{
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintWriter(socket.getOutputStream());
-			while(true)
-			{
-				String messageSent = in.readLine();
-				System.out.println(messageSent);
-			}
 			
-//	
-//			Thread thread4 = new Thread(new LogWriter(in, login));
-//			thread4.start();
-//			Thread thread5 = new Thread(new LogWriter(out));
-//			thread5.start();
+			Thread thread4 = new Thread(new Reception(socket, in, login));
+			thread4.start();
+			Thread thread5 = new Thread(new Emission(socket, out));
+			thread5.start();
+			
 		} catch(Exception e){ e.printStackTrace(); }
 
 
