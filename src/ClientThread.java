@@ -30,8 +30,7 @@ public class ClientThread implements Runnable, Observable{
 			while(true)
 			{
 				message = this.login + " : " + in.readLine();
-				System.out.println(message);
-				notifierObservateurs();				
+				notifierObservateurs();	
 			}
 			
 			

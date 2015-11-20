@@ -6,9 +6,6 @@ import java.util.ArrayList;
 public class ClientsPool implements Observateur {
 
 	private ArrayList<ClientThread> clientsPool;
-//	private Socket socket;
-//	private BufferedReader in;
-//	private PrintWriter out;
 	private String login;
 
 	public ClientsPool()
