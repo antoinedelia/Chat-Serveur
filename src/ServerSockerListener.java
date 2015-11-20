@@ -7,9 +7,10 @@ public class ServerSockerListener {
 	{
 		ServerSocket socketServer;
 		try {
-			socketServer = new ServerSocket(68);
+			socketServer = new ServerSocket(63);
 			Thread thread1 = new Thread(new AccepterClients(socketServer));
 			thread1.start();
+			System.out.println("Serveur en ligne !");
 		} catch (IOException e){ e.printStackTrace(); }
 	}
 

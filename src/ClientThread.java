@@ -1,20 +1,23 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ClientThread implements Runnable{
+public class ClientThread implements Runnable, Observable{
 
 	private Socket socket = null;
 	private BufferedReader in = null;
 	private PrintWriter out = null;
-	private String login = null;
+	private String message, login = null;
+	private List<Observateur> observeurs = new ArrayList<Observateur>();
 
-	public ClientThread(Socket s, String login)
+	public ClientThread(Socket s, BufferedReader in, PrintWriter out, String login)
 	{
 		this.socket = s;
+		this.in = in;
+		this.out = out;
 		this.login = login;
 	}
 
@@ -24,16 +27,50 @@ public class ClientThread implements Runnable{
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintWriter(socket.getOutputStream());
 			
-			Thread thread4 = new Thread(new Reception(socket, in, login, out));
-			thread4.start();
-			Thread thread5 = new Thread(new Emission(socket, out));
-			thread5.start();
+			while(true)
+			{
+				message = this.login + " : " + in.readLine();
+				System.out.println(message);
+				notifierObservateurs();				
+			}
+			
 			
 		} catch(Exception e){ 
 			e.printStackTrace(); 
 		}
 
 
+	}
+
+	@Override
+	public void ajouterObservateur(Observateur o) {
+		observeurs.add(o);
+		
+	}
+
+	@Override
+	public void supprimerObservateur(Observateur o) {
+		observeurs.remove(o);
+		
+	}
+
+	@Override
+	public void notifierObservateurs() {
+		for(Observateur o: observeurs)
+		{
+			o.actualiser(this);
+		}
+		
+	}
+
+	public synchronized void sendMessage(String message) {
+		out.println(message);
+		out.flush();
+		
+	}
+
+	public String getMessage() {
+		return this.message;
 	}
 
 }

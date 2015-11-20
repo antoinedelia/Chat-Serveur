@@ -11,10 +11,12 @@ public class Login implements Runnable {
 	private BufferedReader in = null;
 	private String login = null;
 	private boolean isLogin = false;
+	private ClientsPool pool;
 	
 	public Login(Socket s)
 	{
 		this.socket = s;
+		this.pool = new ClientsPool();
 	}
 	
 	@Override
@@ -29,22 +31,15 @@ public class Login implements Runnable {
 				out.flush();
 				
 				login = in.readLine();
-				
-//				if(login.equals("antoine"))
-//				{
 					out.println("Connecté !");
 					System.out.println("Bienvenue " + login + " !");
 					out.flush();
 					isLogin = true;
-//				}
-//				else
-//				{
-//					out.println("Erreur !");
-//					out.flush();
-//				}
 			}
-			Thread thread3 = new Thread(new ClientThread(socket, login));
-			thread3.start();			
+			this.pool.ajouterClient(socket, in, out, login);
+			
+			//Thread thread3 = new Thread(new ClientThread(socket, login));
+			//thread3.start();			
 		} catch (IOException e) {e.printStackTrace();}
 		
 		
