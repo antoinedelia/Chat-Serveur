@@ -16,6 +16,7 @@ public class Login implements Runnable {
 	{
 		this.pool = new ClientsPool();
 		try{
+			//Server listening on a port
 			this.serverSocket = new ServerSocket(63);
 		}catch(IOException e){e.printStackTrace();}
 	}
@@ -25,25 +26,22 @@ public class Login implements Runnable {
 		try {
 			while(true)
 			{
+				//Accept the client
 				Socket socket = this.serverSocket.accept();
 				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				out = new PrintWriter(socket.getOutputStream());
 				out.println("Login : ");
 				out.flush();
-
+				
+				//We get the client's login
 				String login = in.readLine();
 				out.println("Connecté !");
 				System.out.println("Bienvenue " + login + " !");
 				out.flush();
+				//Adding the client to our pool
 				this.pool.ajouterClient(socket, in, out, login);
 
-			}
-			//Thread thread3 = new Thread(new ClientThread(socket, login));
-			//thread3.start();			
+			}		
 		} catch (IOException e) {e.printStackTrace();}
-
-
-
 	}
-
 }

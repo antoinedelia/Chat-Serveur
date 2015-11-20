@@ -29,7 +29,9 @@ public class ClientThread implements Runnable, Observable{
 			
 			while(true)
 			{
+				//Receiving a message...
 				message = this.login + " : " + in.readLine();
+				//...and send it to all clients
 				notifierObservateurs();	
 			}
 			
