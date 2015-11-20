@@ -19,8 +19,8 @@ public class AccepterClients implements Runnable{
 			while(true)
 			{
 				this.socket = socketServer.accept();
-				Thread thread2= new Thread(new Login(socket));
-				thread2.start();
+				//Thread thread2= new Thread(new Login(socket));
+				//thread2.start();
 			}
 		}catch(IOException e){ e.printStackTrace(); }
 
