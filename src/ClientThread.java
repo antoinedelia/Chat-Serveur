@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -27,7 +28,7 @@ public class ClientThread implements Runnable, Observable{
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintWriter(socket.getOutputStream());
 			
-			while(true)
+			while(!Thread.interrupted())
 			{
 				//Receiving a message...
 				message = this.login + " : " + in.readLine();
@@ -37,10 +38,31 @@ public class ClientThread implements Runnable, Observable{
 			
 			
 		} catch(Exception e){ 
+			stop();
 			e.printStackTrace(); 
 		}
 
 
+	}
+
+	private void stop() {
+		Thread.interrupted();
+		while(!Thread.interrupted()){}
+		out.flush();
+		try {
+			in.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 	@Override

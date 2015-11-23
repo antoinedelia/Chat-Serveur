@@ -37,7 +37,4 @@ public class ClientsPool implements Observateur {
 			client.sendMessage(message);
 		}
 	}
-
-
-
 }

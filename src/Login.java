@@ -24,7 +24,7 @@ public class Login implements Runnable {
 	@Override
 	public void run() {
 		try {
-			while(true)
+			while(!Thread.interrupted())
 			{
 				//Accept the client
 				Socket socket = this.serverSocket.accept();
@@ -42,6 +42,8 @@ public class Login implements Runnable {
 				this.pool.ajouterClient(socket, in, out, login);
 
 			}		
-		} catch (IOException e) {e.printStackTrace();}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
